@@ -107,6 +107,64 @@ inline uint16_t ntoh16(uint16_t net) { return hton16(net); }
 inline uint32_t ntoh32(uint32_t net) { return hton32(net); }
 inline uint64_t ntoh64(uint64_t net) { return hton64(net); }
 
-} // endian
+namespace big {
+
+#if defined(ENDIAN_IS_LITTLE)
+inline uint16_t to_host16(uint16_t be) { return bswap16(be); }
+inline uint32_t to_host32(uint32_t be) { return bswap32(be); }
+inline uint64_t to_host64(uint64_t be) { return bswap64(be); }
+inline uint16_t from_host16(uint16_t host) { return bswap16(host); }
+inline uint32_t from_host32(uint32_t host) { return bswap32(host); }
+inline uint64_t from_host64(uint64_t host) { return bswap64(host); }
+#elif defined(ENDIAN_IS_BIG)
+inline uint16_t to_host16(uint16_t be) { return be; }
+inline uint32_t to_host32(uint32_t be) { return be; }
+inline uint64_t to_host64(uint64_t be) { return be; }
+inline uint16_t from_host16(uint16_t host) { return host; }
+inline uint32_t from_host32(uint32_t host) { return host; }
+inline uint64_t from_host64(uint64_t host) { return host; }
+#elif defined(ENDIAN_DETECT)
+inline uint16_t to_host16(uint16_t be) { return ntoh16(be); }
+inline uint32_t to_host32(uint32_t be) { return ntoh32(be); }
+inline uint64_t to_host64(uint64_t be) { return ntoh64(be); }
+inline uint16_t from_host16(uint16_t host) { return hton16(host); }
+inline uint32_t from_host32(uint32_t host) { return hton32(host); }
+inline uint64_t from_host64(uint64_t host) { return hton64(host); }
+#else
+#error "Unsupported byte order: Please define ENDIAN_IS_LITTLE or ENDIAN_IS_BIG macro"
+#endif
+
+} // namespace big
+
+namespace little {
+
+#if defined(ENDIAN_IS_LITTLE)
+inline uint16_t to_host16(uint16_t le) { return le; }
+inline uint32_t to_host32(uint32_t le) { return le; }
+inline uint64_t to_host64(uint64_t le) { return le; }
+inline uint16_t from_host16(uint16_t host) { return host; }
+inline uint32_t from_host32(uint32_t host) { return host; }
+inline uint64_t from_host64(uint64_t host) { return host; }
+#elif defined(ENDIAN_IS_BIG)
+inline uint16_t to_host16(uint16_t le) { return bswap16(le); }
+inline uint32_t to_host32(uint32_t le) { return bswap32(le); }
+inline uint64_t to_host64(uint64_t le) { return bswap64(le); }
+inline uint16_t from_host16(uint16_t host) { return bswap16(host); }
+inline uint32_t from_host32(uint32_t host) { return bswap32(host); }
+inline uint64_t from_host64(uint64_t host) { return bswap64(host); }
+#elif defined(ENDIAN_DETECT)
+inline uint16_t to_host16(uint16_t le) { return is_big() ? bswap16(le) : le; }
+inline uint32_t to_host32(uint32_t le) { return is_big() ? bswap32(le) : le; }
+inline uint64_t to_host64(uint64_t le) { return is_big() ? bswap64(le) : le; }
+inline uint16_t from_host16(uint16_t host) { return is_big() ? bswap16(host) : host; }
+inline uint32_t from_host32(uint32_t host) { return is_big() ? bswap32(host) : host; }
+inline uint64_t from_host64(uint64_t host) { return is_big() ? bswap64(host) : host; }
+#else
+#error "Unsupported byte order: Please define ENDIAN_IS_LITTLE or ENDIAN_IS_BIG macro"
+#endif
+
+} // namespace little
+
+} // namespace endian
 
 #endif // NAKATT_ENDIAN_H_

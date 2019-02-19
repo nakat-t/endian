@@ -9,7 +9,7 @@
 // In this case there is a penalty for the execution speed.
 //#define ENDIAN_DETECT
 
-#include "endian.h"
+#include "endian/endian.h"
 #include <cstdio>
 #include <cassert>
 
@@ -29,17 +29,29 @@ int main()
 	union {
 		uint16_t i;
 		uint8_t c[sizeof(uint16_t)];
-	} x16 = {0x0102};
+	} x;
 
-	x16.i = endian::hton16(x16.i);
-	assert(x16.c[0] == 1 && x16.c[1] == 2);
-	x16.i = endian::ntoh16(x16.i);
+	x.i = endian::hton16(uint16_t{0x0102});
+	assert(x.c[0] == 1 && x.c[1] == 2);
 
-	assert(x16.i == uint16_t{0x0102});
+	x.i = endian::ntoh16(x.i);
+	assert(x.i == uint16_t{0x0102});
 	if(endian::is_little()) {
-		assert(x16.c[0] == 2 && x16.c[1] == 1);
+		assert(x.c[0] == 2 && x.c[1] == 1);
 	}
 	else {
-		assert(x16.c[0] == 1 && x16.c[1] == 2);
+		assert(x.c[0] == 1 && x.c[1] == 2);
 	}
+
+	x.i = endian::big::from_host16(uint16_t{0x0304});
+	assert(x.c[0] == 3 && x.c[1] == 4);
+	x.i = endian::big::to_host16(x.i);
+	assert(x.i == uint16_t{0x0304});
+
+	x.i = endian::little::from_host16(uint16_t{0x0304});
+	assert(x.c[0] == 4 && x.c[1] == 3);
+	x.i = endian::little::to_host16(x.i);
+	assert(x.i == uint16_t{0x0304});
+
+	return 0;
 }
