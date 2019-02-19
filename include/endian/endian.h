@@ -5,6 +5,7 @@
 #ifndef NAKATT_ENDIAN_H_
 #define NAKATT_ENDIAN_H_
 
+#include <cstddef>
 #include <cstdint>
 #include <utility>
 
