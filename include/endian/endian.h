@@ -117,13 +117,11 @@ inline uint16_t hton16(uint16_t host) { return host; }
 inline uint32_t hton32(uint32_t host) { return host; }
 inline uint64_t hton64(uint64_t host) { return host; }
 template<typename T> inline T hton(T host) { return host; }
-#elif defined(ENDIAN_DETECT)
+#else
 inline uint16_t hton16(uint16_t host) { return is_big() ? host : bswap16(host); }
 inline uint32_t hton32(uint32_t host) { return is_big() ? host : bswap32(host); }
 inline uint64_t hton64(uint64_t host) { return is_big() ? host : bswap64(host); }
 template<typename T> inline T hton(T host) { return is_big() ? host : bswap<T>(host); }
-#else
-#error "Unsupported byte order: Please define ENDIAN_IS_LITTLE or ENDIAN_IS_BIG macro"
 #endif
 
 inline uint16_t ntoh16(uint16_t net) { return hton16(net); }
@@ -151,7 +149,7 @@ inline uint16_t from_host16(uint16_t host) { return host; }
 inline uint32_t from_host32(uint32_t host) { return host; }
 inline uint64_t from_host64(uint64_t host) { return host; }
 template<typename T> inline T from_host(T host) { return host; }
-#elif defined(ENDIAN_DETECT)
+#else
 inline uint16_t to_host16(uint16_t be) { return ntoh16(be); }
 inline uint32_t to_host32(uint32_t be) { return ntoh32(be); }
 inline uint64_t to_host64(uint64_t be) { return ntoh64(be); }
@@ -160,8 +158,6 @@ inline uint16_t from_host16(uint16_t host) { return hton16(host); }
 inline uint32_t from_host32(uint32_t host) { return hton32(host); }
 inline uint64_t from_host64(uint64_t host) { return hton64(host); }
 template<typename T> inline T from_host(T host) { return hton<T>(host); }
-#else
-#error "Unsupported byte order: Please define ENDIAN_IS_LITTLE or ENDIAN_IS_BIG macro"
 #endif
 
 } // namespace big
@@ -186,7 +182,7 @@ inline uint16_t from_host16(uint16_t host) { return bswap16(host); }
 inline uint32_t from_host32(uint32_t host) { return bswap32(host); }
 inline uint64_t from_host64(uint64_t host) { return bswap64(host); }
 template<typename T> inline T from_host(T host) { return bswap<T>(host); }
-#elif defined(ENDIAN_DETECT)
+#else
 inline uint16_t to_host16(uint16_t le) { return is_big() ? bswap16(le) : le; }
 inline uint32_t to_host32(uint32_t le) { return is_big() ? bswap32(le) : le; }
 inline uint64_t to_host64(uint64_t le) { return is_big() ? bswap64(le) : le; }
@@ -195,8 +191,6 @@ inline uint16_t from_host16(uint16_t host) { return is_big() ? bswap16(host) : h
 inline uint32_t from_host32(uint32_t host) { return is_big() ? bswap32(host) : host; }
 inline uint64_t from_host64(uint64_t host) { return is_big() ? bswap64(host) : host; }
 template<typename T> inline T from_host(T host) { return is_big() ? bswap<T>(host) : host; }
-#else
-#error "Unsupported byte order: Please define ENDIAN_IS_LITTLE or ENDIAN_IS_BIG macro"
 #endif
 
 } // namespace little

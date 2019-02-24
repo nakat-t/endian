@@ -3,8 +3,8 @@
 // found in the top-level directory of this distribution.
 
 // Define `ENDIAN_IS_LITTLE` or `ENDIAN_IS_BIG` macro before include "endian.h".
-// Alternatively, if you define the `ENDIAN_DETECT` macro, it detects endianness
-// at run time. In that case, the speed will be slow.
+// Alternatively, if you don't define macro, it detects endianness at run time.
+// In that case, a run-time endian check is added.
 #include <endian/endian.h>
 
 #include <cassert>

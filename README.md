@@ -1,13 +1,13 @@
 # endian
 
-C++ header-only endian conversion utility
+C++ header only endian conversion utility with OS independence.
 
 # Installation
 
 1. This library is header only. Please copy the header file to your project.
 2. Define `ENDIAN_IS_LITTLE` or `ENDIAN_IS_BIG` macro before include "endian.h".
-   Alternatively, if you define the `ENDIAN_DETECT` macro, it detects endianness
-   at run time. In that case, the speed will be slow.
+   Alternatively, if you don't define macro, it detects endianness at run time.
+   In that case, a run-time endian check is added.
 
 # Usage
 
