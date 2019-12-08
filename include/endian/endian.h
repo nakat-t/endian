@@ -10,7 +10,7 @@
 #include <utility>
 
 #define ENDIAN_VERSION_MAJOR 1
-#define ENDIAN_VERSION_MINOR 0
+#define ENDIAN_VERSION_MINOR 1
 #define ENDIAN_VERSION_PATCH 0
 #define ENDIAN_STR(v) #v
 #define ENDIAN_VERSION_(major, minor, patch) ENDIAN_STR(major) "." ENDIAN_STR(minor) "." ENDIAN_STR(patch)
