@@ -16,6 +16,22 @@
 #define ENDIAN_VERSION_(major, minor, patch) ENDIAN_STR(major) "." ENDIAN_STR(minor) "." ENDIAN_STR(patch)
 #define ENDIAN_VERSION ENDIAN_VERSION_(ENDIAN_VERSION_MAJOR, ENDIAN_VERSION_MINOR, ENDIAN_VERSION_PATCH)
 
+// auto endian detect
+// @see https://en.cppreference.com/w/cpp/types/endian
+#if !defined(ENDIAN_IS_LITTLE) && !defined(ENDIAN_IS_BIG)
+	#if defined(__BYTE_ORDER__) && defined(__ORDER_LITTLE_ENDIAN__) && defined(__ORDER_BIG_ENDIAN__)
+		#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+			#define ENDIAN_IS_LITTLE
+		#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+			#define ENDIAN_IS_BIG
+		#else
+			#error "endian.h support little or big endian only."
+		#endif
+	#elif defined(_WIN32)
+		#define ENDIAN_IS_LITTLE
+	#endif
+#endif
+
 namespace endian {
 
 inline const char* version() { return ENDIAN_VERSION; }
